@@ -1,4 +1,7 @@
 from collections import defaultdict
+import os
+
+_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
 dictionary_names = [
@@ -12,7 +15,7 @@ dictionary_names = [
 ]
 
 def get_file(n):
-  with open('../data/' + n) as f:
+  with open(os.path.join(_ROOT, 'data', n)) as f:
     return f.readlines()
 
 def add_entry(entries, form, lemma):
@@ -29,6 +32,7 @@ def parse_entry(entry, lookup_tables):
     add_entry(lookup_tables["NOUN"], form, lemma)
   if tag.startswith('V'): # verb
     add_entry(lookup_tables["VERB"], form, lemma)
+    add_entry(lookup_tables["AUX"], form, lemma)
   if tag.startswith('R'): # adverb
     add_entry(lookup_tables["ADV"], form, lemma)
   if tag.startswith('S'): # adposition
@@ -43,12 +47,11 @@ def parse_entry(entry, lookup_tables):
 
 def process_file(n, lookup_tables):
   entries = get_file(n)
-  print("{} entries...".format(len(entries)))
   for entry in entries:
     parse_entry(entry, lookup_tables)
 
 def load_lookup_tables():
   lookup_tables = defaultdict(dict)
   for name in dictionary_names:
-    process_file(name)
+    process_file(name, lookup_tables)
   return lookup_tables
