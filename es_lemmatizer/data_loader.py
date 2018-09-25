@@ -55,10 +55,10 @@ def parse_entry(entry, lookup_tables, lookup_tables_no_accents):
     add_entry(lookup_tables["INTJ"], lookup_tables_no_accents["INTJ"], form, lemma)
 
 
-def process_file(n, lookup_tables):
+def process_file(n, lookup_tables, lookup_tables_no_accents):
   entries = get_file(n)
   for entry in entries:
-    parse_entry(entry, lookup_tables)
+    parse_entry(entry, lookup_tables, lookup_tables_no_accents)
 
 def load_lookup_tables():
   lookup_tables = defaultdict(dict)
